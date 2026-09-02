@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="2023 national robot competition team project: evidence-bound navigation reconstruction.">
+  <title>Smart Home Transport Robot · Navigation Reconstruction</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <nav>
+        <span class="brand"><i></i> ROBOT NAV LAB</span>
+        <a href="https://github.com/QAQgpnu/smart-home-transport-robot">View source ↗</a>
+      </nav>
+      <div class="hero-grid">
+        <section>
+          <p class="eyebrow">2023 NATIONAL ROBOT COMPETITION · TEAM PROJECT</p>
+          <h1>智能家居搬运机器人<br><span>导航算法重构</span></h1>
+          <p class="lead">把留存的 Dijkstra + DWA 设计思路，重构成一个可审查、可交互、无需机器人硬件的导航演示。</p>
+          <div class="badges">
+            <span>🏆 国家级三等奖</span>
+            <span>Global + Local Planning</span>
+            <span>Offline & Deterministic</span>
+          </div>
+        </section>
+        <aside class="boundary">
+          <strong>Evidence boundary</strong>
+          <p>本页展示赛后独立重构，不是比赛原始源码，也不代表实机性能复现。奖项属于证书所列团队。</p>
+        </aside>
+      </div>
+    </header>
+
+    <section class="demo" aria-labelledby="demo-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">INTERACTIVE REPLAY</p>
+          <h2 id="demo-title">从全局最短路，到动态避障</h2>
+        </div>
+        <div class="controls" aria-label="演示控制">
+          <button id="play" type="button">▶ 播放</button>
+          <button id="reset" type="button" class="secondary">↺ 重置</button>
+          <label>速度
+            <select id="speed">
+              <option value="1">1×</option>
+              <option value="2" selected>2×</option>
+              <option value="4">4×</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="stage-wrap">
+        <canvas id="stage" width="960" height="640" aria-label="机器人导航轨迹动画"></canvas>
+        <div class="legend">
+          <span><i class="global"></i>Dijkstra 全局路径</span>
+          <span><i class="local"></i>DWA 运行轨迹</span>
+          <span><i class="dynamic"></i>动态障碍</span>
+        </div>
+      </div>
+      <input id="timeline" type="range" min="0" value="0" aria-label="导航时间线">
+      <div class="metrics">
+        <article><span id="progress">0%</span><small>任务进度</small></article>
+        <article><span id="route">–</span><small>模拟路径长度</small></article>
+        <article><span id="clearance">–</span><small>最小障碍间距</small></article>
+        <article><span id="status">待机</span><small>导航状态</small></article>
+      </div>
+    </section>
+
+    <section class="story">
+      <div>
+        <p class="eyebrow">PLANNING PIPELINE</p>
+        <h2>一个清晰的两层决策链</h2>
+      </div>
+      <ol>
+        <li><b>01</b><div><strong>栅格建模</strong><p>把墙体和家具抽象为占用栅格，起点与目标落在可通行单元。</p></div></li>
+        <li><b>02</b><div><strong>Dijkstra 全局规划</strong><p>在 8 邻域图上计算最短无碰路径，并阻止对角线穿越障碍角点。</p></div></li>
+        <li><b>03</b><div><strong>DWA 局部控制</strong><p>在速度窗口中采样轨迹，综合目标距离、路径贴合、朝向、速度和安全间距评分。</p></div></li>
+        <li><b>04</b><div><strong>动态响应</strong><p>运行中加入未知障碍，局部规划器绕行后重新贴近全局路线并抵达目标。</p></div></li>
+      </ol>
+    </section>
+
+    <footer>
+      <p>Portfolio reconstruction by <a href="https://github.com/QAQgpnu">QAQgpnu</a> · MIT licensed code</p>
+      <p>Competition certificate and full team materials are intentionally not published.</p>
+    </footer>
+  </main>
+  <script src="demo-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

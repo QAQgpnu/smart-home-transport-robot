@@ -1,0 +1,31 @@
+name: demo-smoke
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate deterministic demo artifacts
+        run: python scripts/demo.py
+      - name: Confirm expected outputs
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          result = json.loads(Path("artifacts/navigation-run.json").read_text())
+          assert result["metrics"]["reached_goal"] is True
+          assert Path("figures/navigation-overview.svg").is_file()
+          assert Path("docs/demo-data.js").is_file()
+          print(result["metrics"])
