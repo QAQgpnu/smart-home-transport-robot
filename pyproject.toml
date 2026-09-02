@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart-home-transport-robot"
+version = "1.0.0"
+description = "Evidence-bound navigation reconstruction for a 2023 national robot competition team project"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "QAQgpnu" }]
+keywords = ["robotics", "dijkstra", "dynamic-window-approach", "path-planning", "portfolio"]
+
+[project.scripts]
+robot-navigation-demo = "home_transport_robot.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
